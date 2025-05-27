@@ -299,21 +299,28 @@ document.addEventListener('DOMContentLoaded', function () {
             // Salvar no cache local com informações completas do remetente
             const messagesToCache = messages.map(msg => {
                 const sender = msg.get("sender");
+                const senderName = msg.get("senderName"); // Luigi // Adicionando senderName
+
                 return {
                     id: msg.id,
                     text: msg.get("text"),
                     groupId: msg.get("groupId"),
                     sender: {
                         id: sender ? sender.id : "unknown",
-                        username: sender ? sender.get("username") : "Usuário desconhecido"
+                        username: senderName || (sender ? sender.get("username") : "Usuário desconhecido")
                     },
                     createdAt: msg.get("createdAt")
                 };
             });
             
+
+        
+            
             saveMessagesToCache(groupId, messagesToCache);
             renderMessages(messages);
             hideLoading();
+
+            
         }).catch((error) => {
             console.error("Erro ao carregar mensagens:", error);
             
@@ -366,12 +373,14 @@ document.addEventListener('DOMContentLoaded', function () {
             if (message.get) {
                 // Mensagem do Parse
                 const sender = message.get("sender");
+                const senderNameFromMessage = message.get("senderName"); // pega o nome salvo na mensagem
+
                 if (sender) {
                     senderId = sender.id;
-                    senderName = sender.get("username");
+                    senderName = senderNameFromMessage || sender.get("username");
                 } else {
                     senderId = "unknown";
-                    senderName = "Usuário desconhecido";
+                    senderName = senderNameFromMessage || "Usuário desconhecido";
                 }
             } else {
                 // Mensagem do cache

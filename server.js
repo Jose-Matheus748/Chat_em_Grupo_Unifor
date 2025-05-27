@@ -64,6 +64,7 @@ io.on('connection', (socket) => {
       // Definir os campos da mensagem
       newMessage.set("text", data.text);
       newMessage.set("groupId", data.groupId);
+      newMessage.set("senderName", data.senderName); //Luigi // colocando o senderName dentro dos campos que serão mandados para o back4app
       newMessage.set("sender", sender); // Usar o objeto Parse.User completo
       
       // Configurar ACL para permitir leitura e escrita pública
